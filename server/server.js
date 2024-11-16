@@ -50,24 +50,17 @@ app.get('/', async (req, res) => {
 
 // signup route
 app.post('/signup', async (req, res) => {
-    const {  password, email, dob, firstName, lastName, phoneNo } = req.body;
+    const {  password, email } = req.body;
   
-    // Generate a unique student ID starting with 'A' followed by random digits
-    const studentId = 'A' + Math.floor(Math.random() * 100000000).toString(); // 'A' followed by an 8-digit random number
-
+    
   
     const params = {
       ClientId: process.env.COGNITO_CLIENT_ID, // Your Cognito app client ID
       Username: email,
       Password: password,
       UserAttributes: [
-        { Name: 'email', Value: email },
-        { Name: 'custom:DOB', Value: dob },
-        { Name: 'custom:FirstName', Value: firstName },
-        { Name: 'custom:LastName', Value: lastName },
-        { Name: 'custom:PhoneNo', Value: phoneNo },
-        { Name: 'custom:StudentId', Value: studentId },
-        { Name: 'custom:UserType', Value: '0' } // Setting default userType to '0'
+        { Name: 'email', Value: email }
+         
       ]
     };
   
@@ -76,8 +69,9 @@ app.post('/signup', async (req, res) => {
       const data = await cognito.signUp(params).promise();
   
       console.log('User signed up successfully:', data);
+      const userId = data.UserSub;
   
-      res.status(200).json({ success: true, message: 'User signed up successfully', studentId });
+      res.status(200).json({ success: true, message: 'User signed up successfully', userId});
     } catch (error) {
       console.error('Error signing up user:', error);
       res.status(500).json({ success: false, error: 'Error signing up user: ' + error.message });
@@ -126,10 +120,14 @@ app.post('/login', async (req, res) => {
     try {
         const data = await cognito.initiateAuth(params).promise();
         console.log("Login successful:", data);
+        // Extract the user ID from the ID token
+        const token = data.AuthenticationResult.IdToken;
+        const decodedToken = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+        const userId = decodedToken.sub;
         res.status(200).json({
             success: true,
             message: "Login successful",
-            // token: data.AuthenticationResult.IdToken,  // If successful, send the ID token
+            userId, // Return the unique user ID
         });
     } catch (error) {
         console.error("Error during login:", error);
