@@ -90,15 +90,16 @@ class Database {
         return courses;
     }
 
-    async createCourse(facultyId, courseName, courseDescription, roomNumber, seatsAvailable, totalSeats) {
-        console.log('Creating course:', facultyId, courseName, courseDescription, roomNumber, seatsAvailable, totalSeats);
+    async createCourse(facultyId, courseName, courseDescription, roomNumber, seatsAvailable, totalSeats, dateAvailable) {
+        console.log('Creating course:', facultyId, courseName, courseDescription, roomNumber, seatsAvailable, totalSeats, dateAvailable);
         const course = await Course.create({
             faculty_id: facultyId,
             course_name: courseName,
             course_description: courseDescription,
             room_number: roomNumber,
             seats_available: seatsAvailable,
-            total_seats: totalSeats
+            total_seats: totalSeats,
+            date_available: dateAvailable
         })
         return course.id;
 

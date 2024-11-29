@@ -24,9 +24,9 @@ courseRoutes.get('/getAllCourses', isSignedIn, isVerified, async (req, res) => {
 // Create new course
 courseRoutes.post('/createCourse', isSignedIn, isVerified, isAdmin, async (req, res) => {
     const db = req.db;
-    const { faculty_id, course_name, course_description, room_number, seats_available, total_seats } = req.body;
+    const { faculty_id, course_name, course_description, room_number, seats_available, total_seats, date_available} = req.body;
     try {
-        const courseId = await db.createCourse(faculty_id, course_name, course_description, room_number, seats_available, total_seats);
+        const courseId = await db.createCourse(faculty_id, course_name, course_description, room_number, seats_available, total_seats, date_available);
         res.status(200).json({ "message": "Course created successfully", courseId });
         return;
     } catch (error) {
