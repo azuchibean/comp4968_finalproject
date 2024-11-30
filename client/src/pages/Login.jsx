@@ -19,7 +19,12 @@ function Login() {
                 credentials: "include", // Ensure cookies are sent for session handling
             });
 
+            console.log(response);
+
             const data = await response.json();
+
+            console.log(data);
+
             if (!response.ok) {
                 setErrorMessage(data.error || "Login failed. Please try again.");
                 return;
