@@ -36,6 +36,10 @@ function Login() {
                 credentials: "include",
             });
 
+            console.log(userResponse);
+
+            console.log(userData);
+
             const userData = await userResponse.json();
             if (!userResponse.ok) {
                 setErrorMessage(userData.error || "Failed to fetch user details.");
