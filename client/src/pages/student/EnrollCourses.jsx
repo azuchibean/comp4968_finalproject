@@ -63,7 +63,7 @@ const EnrollCourses = () => {
 
     const fetchCourses = async () => {
       try {
-        const response = await fetch(`https://qpylc2z4re.execute-api.us-west-2.amazonaws.com/api/course/getAllCourses`, {
+        const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/course/getAllCourses`, {
           credentials: "include", // Include cookies in the request
         });
 
