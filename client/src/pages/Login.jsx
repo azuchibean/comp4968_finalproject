@@ -19,11 +19,7 @@ function Login() {
                 credentials: "include", // Ensure cookies are sent for session handling
             });
 
-            console.log(response);
-
             const data = await response.json();
-
-            console.log(data);
 
             if (!response.ok) {
                 setErrorMessage(data.error || "Login failed. Please try again.");
@@ -36,14 +32,34 @@ function Login() {
                 credentials: "include",
             });
 
-            console.log(userResponse);
-
-            console.log(userData);
-
-            const userData = await userResponse.json();
-            if (!userResponse.ok) {
-                setErrorMessage(userData.error || "Failed to fetch user details.");
-                return;
+            try {
+                // Check if the response is OK (status 2xx)
+                if (!userResponse.ok) {
+                    // Log the status code for debugging
+                    console.error("Error response status:", userResponse.status);
+                    const errorText = await userResponse.text(); // Get the raw text
+                    console.error("Error response body:", errorText);
+            
+                    // Try to parse JSON, otherwise fallback to raw error message
+                    const userData = errorText ? JSON.parse(errorText) : {};
+                    setErrorMessage(userData.error || `Failed to fetch user details. Status: ${userResponse.status}`);
+                    return;
+                }
+            
+                // Attempt to parse JSON if the response is successful
+                const userData = await userResponse.json();
+            
+                // If userData is unexpectedly empty, handle that case
+                if (!userData || !userData.user) {
+                    setErrorMessage("User data is missing or malformed.");
+                    return;
+                }
+            
+                // Continue with the valid user data processing here...
+            } catch (error) {
+                // Catch any other errors (e.g., network failure, invalid JSON)
+                console.error("An error occurred:", error);
+                setErrorMessage("An error occurred while fetching user details. Please try again later.");
             }
 
             // Redirect based on user role
