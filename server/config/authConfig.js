@@ -5,14 +5,14 @@ import User from '../models/User.js';
 // FUNCTIONS
 const isSignedIn = async (req, res, next) => {
     if (!req.session.userId) {
-        res.status(401).json({ "error": "User is not signed in" });
+        res.status(401).json({ "error": "User is not signed in; session" });
         return;
     }
     // check if user is in database
     const db = req.db;
     const user = await db.getUserById(req.session.userId);
     if (!user) {
-        res.status(401).json({ "error": "User is not signed in" });
+        res.status(401).json({ "error": "User is not signed in; db" });
         return;
     }
     next();
