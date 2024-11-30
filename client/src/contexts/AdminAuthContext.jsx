@@ -13,7 +13,7 @@ export const AdminAuthProvider = ({ children }) => {
         try {
             const serverUrl = import.meta.env.VITE_SERVER_URL;  // Use your environment variable here
 
-            const response = await fetch(`${serverUrl}/api/auth/isAdmin/`, {
+            const response = await fetch(`${serverUrl}/api/auth/isAdmin`, {
                 method: "GET",
                 credentials: "include",  // Ensure credentials are included in the request
             });

@@ -13,7 +13,7 @@ export const FacultyAuthProvider = ({ children }) => {
         try {
             const serverUrl = import.meta.env.VITE_SERVER_URL;  // Use your environment variable here
 
-            const response = await fetch(`${serverUrl}/api/auth/isFaculty/`, {
+            const response = await fetch(`${serverUrl}/api/auth/isFaculty`, {
                 method: "GET",
                 credentials: "include",  // Ensure credentials are included in the request
             });

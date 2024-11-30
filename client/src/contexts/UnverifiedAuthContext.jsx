@@ -14,7 +14,7 @@ export const UnverifiedAuthProvider = ({ children }) => {
             const serverUrl = import.meta.env.VITE_SERVER_URL;  // Use your environment variable here
 
             // Use Axios to send the request
-            const response = await fetch(`${serverUrl}/api/auth/isVerified/`, {
+            const response = await fetch(`${serverUrl}/api/auth/isVerified`, {
                 method: "GET",
                 credentials: "include",  // Ensure credentials are included in the request
             });
