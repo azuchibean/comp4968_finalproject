@@ -19,12 +19,16 @@ function Login() {
                 credentials: "include", // Ensure cookies are sent for session handling
             });
 
+            console.log(`Response = ${response}`);
+
             const data = await response.json();
 
             if (!response.ok) {
                 setErrorMessage(data.error || "Login failed. Please try again.");
                 return;
             }
+
+            console.log(`Data = ${data}`);
 
             // Fetch user details from session
             const userResponse = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/user/getUserBySession`, {
